@@ -1,23 +1,30 @@
 window.addEventListener('load', () => {
 
-    let sanitizeVal;
     let sanitizeUrl;
-    
+    let sanitizeVal;
 
     document.getElementById("country").className += " load";
     document.getElementById("lookup").className += " load";
-    
+    document.getElementById("citylookup").className += " load";
+
+  
 
     let result = document.querySelector("div#result");
-    document.querySelector("button#lookup").addEventListener("click", (event) => {
+    document.querySelector("button#lookup").addEventListener("click", function() {
         sanitizeVal = document.querySelector("input#country").value.replace(/[-&\/\\#,+()$@|~%!.'":;*?<>{}]/g, '');
         sanitizeUrl = `world.php?country= ${sanitizeVal}`.replace(/"[^-0-9+@#/%?~_|!:,.;\(\)]"/g, '');
-        ajaxCall(event);
+        ajaxCall();
 
     });
 
-    let ajaxCall = (event) => {
-        event.preventDefault();
+    document.querySelector("button#lookupcity").addEventListener("click", function() {
+        sanitizeVal = document.querySelector("input#country").value.replace(/[-&\/\\#,+()$@|~%!.'":;*?<>{}]/g, '');
+        sanitizeUrl = `world.php?country= ${sanitizeVal}&context=cities`.replace(/"[^-0-9+@#/%?~_|!:,.;\(\)]"/g, '');
+        ajaxCall();
+    });
+
+    let ajaxCall = function() {
+        this.preventDefault();
         fetch(sanitizeUrl, { method: 'GET' })
             .then(resp => resp.text())
             .then(info => {
